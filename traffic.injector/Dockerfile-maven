@@ -1,0 +1,17 @@
+FROM openjdk:8-jre
+MAINTAINER Daniel Messer <daniel.messer@gmail.com>
+
+ENTRYPOINT ["/usr/bin/java", "-jar", "/opt/traffic-injector/traffic-injector.jar"]
+
+RUN mkdir -p ${application.workdir}
+
+#ADD target/lib /opt/traffic-injector/lib
+
+# Add the service itself
+#ARG JAR_FILE
+#ADD target/${JAR_FILE} /opt/traffic-injector/traffic-injector.jar
+
+WORKDIR ${application.workdir}
+COPY ${application.dependencies} ${application.dependencies}
+COPY ${project.build.finalName}.jar ${project.build.finalName}.jar
+ENTRYPOINT ["/usr/bin/java", "-jar", "${project.build.finalName}.jar"]
